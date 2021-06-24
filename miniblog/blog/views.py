@@ -24,7 +24,9 @@ def dashboard(request):
        user = request.user
        fullname = user.get_full_name()
        groups = Group.objects.all()
-       return render(request, 'blog/dashboard.html', {'posts':posts, 'fullname': fullname, 'groups': groups})
+       ip = request.session.get('ip', 0)
+
+       return render(request, 'blog/dashboard.html', {'posts':posts, 'fullname': fullname, 'groups': groups, 'ip':ip})
     else:
        return redirect('/blog/login')
 
@@ -97,7 +99,7 @@ def deletepost(request, id):
     if request.user.is_authenticated:
         if request.method == 'POST':
             p = Post.objects.get(id=id)
-            p.delete
+            p.delete()
         return redirect('/blog/dashboard')
     else:
         return redirect('/login/')
