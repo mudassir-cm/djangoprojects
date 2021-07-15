@@ -1,0 +1,38 @@
+{% extends 'store/base.html' %}
+{% block msg %}
+{% if messages %}
+    {% for message in messages %}
+     <div {% if message.tags %} class="alert alert-danger alert-dismissible fade show " role="alert" {% endif %}>
+         <strong>{{ message }}</strong>
+     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+     </div>
+   {% endfor %}
+   {% endif %}
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="p-4 m-4">
+    <div class="col-sm-4 mx-auto border rounded pt-4">
+            <h2 class="alert alert-light text-center border rounded"> customer creation form</h2>
+<form method="POST" action="" novalidate>
+{% csrf_token %}
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+        <p class="alert alert-danger my-3">{{ error }}</p>
+        {% endfor %}
+        {% endif %}
+{% for field in form %}
+<div class="form-group my-2">
+{{ field.label_tag }} {{ field }}
+{% for error in field.errors %}
+<span class="errorlist text-danger">{{ error }}</span>
+{% endfor %}
+    {% endfor %}
+</div>
+    <input type="submit" value="Submit" class="btn btn-info btn-sm">
+</form>
+    </div>
+    </div>
+</div>
+</div>
+{% endblock %}

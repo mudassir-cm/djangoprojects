@@ -1,0 +1,41 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+{% load cart %}
+
+{% if orders %}
+<table class="table">
+    <p class="display-4">Your Order</p>
+    <tr>
+        <th>Serial</th>
+        <th>Product</th>
+        <th>Image</th>
+        <th>price</th>
+        <th>Quantity</th>
+        <th>total</th>
+        <th>Date</th>
+        <th>status</th>
+    </tr>
+    {% for o in orders %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ o.product.name }}</td>
+        <td><img src="{{o.product.image.url}}" class="rounded" style="height:50px"></td>
+        <td>{{ o.price }}</td>
+        <td>{{ o.quantity }}</td>
+        <td>{{ o|total }}</td>
+        <td>{{ o.date }}</td>
+        {% if o.status %}
+        <td><small class="badge rounded-pill bg-success">Completed</small></td>
+        {% else %}
+        <td><small class="badge rounded-pill bg-warning">Pending</small></td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+
+
+
+{% else %}
+<h1 class="text-center text-danger">Cart is Empty</h1>
+{% endif %}
+{% endblock %}

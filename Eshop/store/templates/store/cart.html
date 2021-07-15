@@ -1,0 +1,74 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+{% load cart %}
+{% if products %}
+<table class="table">
+    <p class="display-4">Cart</p>
+    <tr>
+        <th>Serial</th>
+        <th>Name</th>
+        <th>Image</th>
+        <th>price</th>
+        <th>Quantity</th>
+        <th>total</th>
+    </tr>
+    {% for p in products %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ p.name }}</td>
+        <td><img src="{{p.image.url}}" class="rounded" style="height:50px"></td>
+        <td>{{ p.price }}</td>
+        <td>{{ p|cart_quantity:request.session.cart }}</td>
+        <td>{{ p|product_total:request.session.cart }}</td>
+    </tr>
+    {% endfor %}
+    <tfoot>
+    <tr>
+        <th colspan="5" class="text-center">Total</th>
+        <th>{{ products|total_amount:request.session.cart }}</th>
+    </tr>
+    </tfoot>
+</table>
+<div class="m-3 p-3 clearfix">
+    <a href="#" class="btn btn-outline-info border rounded col-lg-3 float-end"
+       data-bs-toggle="modal" data-bs-target="#exampleModal">Check out</a>
+
+</div>
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{% url 'checkout' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="text" name="phone" class="form-control" placeholder="Phone">
+            </div>
+            <div class="form-group">
+                <label>Address</label>
+                <input type="text" name="address" class="form-control" placeholder="Address">
+            </div>
+            <input type="submit" value="Check Out" class="btn btn-outline-info col-lg-6 floadt-end" >
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% else %}
+<h1 class="text-center text-danger">Cart is Empty</h1>
+{% endif %}
+{% endblock %}

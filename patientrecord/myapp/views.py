@@ -113,7 +113,7 @@ def addpatienthistory(request, id):
         if request.method == 'POST':
             form = PatientHistoryForm(request.POST)
             if form.is_valid():
-                messages.success(request, ' cure history added %s successfully' % patient.name)
+                messages.success(request, '%s cure history added successfully' % patient.name.upper)
                 form.save()
                 return redirect('patienthistory', id=id)
                 #return redirect(reverse('/myapp/patienthistory', kwargs={"user_id": id}))
